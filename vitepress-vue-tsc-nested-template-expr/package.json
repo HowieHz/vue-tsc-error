@@ -1,0 +1,17 @@
+{
+  "name": "vitepress-vue-tsc-nested-template-expr",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "typecheck": "vue-tsc -p tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "vue": "^3.5.32"
+  },
+  "devDependencies": {
+    "vitepress": "2.0.0-alpha.17",
+    "vue-tsc": "^3.2.7"
+  }
+}

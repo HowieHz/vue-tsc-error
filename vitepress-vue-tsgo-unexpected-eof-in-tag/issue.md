@@ -1,4 +1,4 @@
-Title: vue-tsgo crashes with "Unexpected EOF in tag" for a VitePress Markdown file combining a template-literal attribute and later inline code
+Title: vue-tsgo misparses VitePress Markdown fixtures containing backticks and can crash with "Unexpected EOF in tag"
 
 Vue - Official extension or vue-tsgo version
 `vue-tsgo 0.2.0`
@@ -38,33 +38,26 @@ package.json dependencies
 Steps to reproduce
 1. Open this reproduction project.
 2. Run the GitHub Actions workflow at `.github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml`.
-3. Inspect `docs/index.md`.
+3. Inspect the files under `docs/cases/`.
 
 What is expected?
-Both `vue-tsgo` and `vue-tsc` should accept this valid VitePress Markdown file:
+Both `vue-tsgo` and `vue-tsc` should accept these valid VitePress Markdown fixtures:
 
-- the HTML template contains a valid Vue binding with a JavaScript template literal:
-
-```vue
-<button :title="`Page ${count}`" type="button">
-  Visible page count: {{ count }}
-</button>
-```
-
-- later Markdown prose contains ordinary inline code: `` `x` ``
+- `docs/cases/two-template-attrs.md`
+- `docs/cases/two-inline-codes.md`
+- `docs/cases/template-then-inline.md`
+- `docs/cases/inline-then-template.md`
 
 What is actually happening?
-The workflow is set up to verify that `pnpm run docs:build` succeeds, `pnpm run typecheck:vue-tsc` succeeds, and `pnpm run typecheck:vue-tsgo` fails during Markdown-to-SFC handling with:
+The workflow runs raw `vue-tsc` and `vue-tsgo` commands against each fixture. `vue-tsc` is used as the comparison baseline, while failing `vue-tsgo` runs expose the parser error directly in the Actions log, including errors like:
 
 ```text
 SyntaxError: Unexpected EOF in tag.
 ```
 
-On the same project and the same `docs/index.md`, `vue-tsc` does not hit this crash.
+The fixtures cover these four layouts:
 
-This only happens when both conditions are present in the same Markdown file. If either:
-
-- the template literal inside the HTML attribute is removed, or
-- the later Markdown inline code is removed
-
-then the crash goes away.
+- two HTML attributes containing JavaScript template literals
+- two ordinary Markdown inline-code spans
+- template-literal attribute first, then Markdown inline code
+- Markdown inline code first, then template-literal attribute

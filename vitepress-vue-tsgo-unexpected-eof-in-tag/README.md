@@ -1,44 +1,35 @@
 # vitepress-vue-tsgo-unexpected-eof-in-tag
 
-Minimal VitePress reproduction for a `vue-tsgo` Markdown parsing failure.
+Minimal VitePress reproduction set for `vue-tsgo` Markdown parsing failures around backticks.
 
 ## CI Reproduce
 
 Workflow file: `.github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml`
 
-The workflow verifies this exact behavior:
+The workflow:
 
 - `pnpm run docs:build` succeeds
-- `pnpm run typecheck:vue-tsc` succeeds
-- `pnpm run typecheck:vue-tsgo` fails with `SyntaxError: Unexpected EOF in tag.`
+- runs raw `vue-tsc` and `vue-tsgo` commands for each fixture
+- leaves the original `vue-tsgo` error output visible in the Actions logs
+- fails if all four `vue-tsgo` fixture runs succeed unexpectedly
 
 ## Local Commands
 
 ```bash
 pnpm install --ignore-workspace
-pnpm run ci:repro
+pnpm exec vue-tsgo -p tsconfig.case.template-then-inline.json --pretty false
+pnpm exec vue-tsc -p tsconfig.case.template-then-inline.json --pretty false
 ```
 
-## Expected
+## Fixtures
 
-Both `vue-tsgo` and `vue-tsc` should accept a valid VitePress Markdown page that contains:
+- `docs/cases/two-template-attrs.md`
+- `docs/cases/two-inline-codes.md`
+- `docs/cases/template-then-inline.md`
+- `docs/cases/inline-then-template.md`
 
-- a template attribute using a JavaScript template literal
-- ordinary Markdown prose with inline code later in the same file
+Each fixture has a matching `tsconfig.case.*.json` so CI can typecheck it in isolation.
 
 ## Actual
 
-`vue-tsgo` crashes with:
-
-```txt
-SyntaxError: Unexpected EOF in tag.
-```
-
-`vue-tsc` accepts the same file without this crash.
-
-This minimal repro uses:
-
-- a visible button with a valid `` :title="`Page ${count}`" `` template expression
-- a later Markdown list item containing inline code: `` `x` ``
-
-If either the template literal in the HTML attribute or the later Markdown inline code is removed, the failure goes away.
+`vue-tsgo` and `vue-tsc` are run against the same valid VitePress Markdown fixtures. The CI summary records which combinations pass and fail, and the failing `vue-tsgo` steps expose the raw parser error directly in the log output.

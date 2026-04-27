@@ -1,11 +1,8 @@
-<script setup lang="ts">
-const count = 3;
-</script>
+# vitepress-vue-tsgo-unexpected-eof-in-tag
 
-<div>
-  <button :title="`Page ${count}`" type="button">
-    Visible page count: {{ count }}
-  </button>
-</div>
+This reproduction contains four small VitePress Markdown fixtures:
 
-- `x`.
+- [two-template-attrs](./cases/two-template-attrs.md)
+- [two-inline-codes](./cases/two-inline-codes.md)
+- [template-then-inline](./cases/template-then-inline.md)
+- [inline-then-template](./cases/inline-then-template.md)

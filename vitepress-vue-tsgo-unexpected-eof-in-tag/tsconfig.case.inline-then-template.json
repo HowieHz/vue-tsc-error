@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "env.d.ts",
+    "docs/cases/inline-then-template.md",
+    "docs/.vitepress/**/*.ts"
+  ]
+}

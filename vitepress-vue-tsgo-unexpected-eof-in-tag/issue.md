@@ -4,22 +4,21 @@ Vue - Official extension or vue-tsgo version
 `vue-tsgo 0.2.0`
 
 VSCode version
-`N/A. Reproduced with vue-tsgo CLI.`
+`N/A. Reproduction is prepared as a GitHub Actions workflow in this repo.`
 
 Vue version
 `3.5.33`
 
 TypeScript version
-`N/A directly in this repro. Triggered through vue-tsgo 0.2.0.`
+`N/A directly in this repro. Triggered through vue-tsgo 0.2.0 and compared against vue-tsc 3.2.7.`
 
 System Info
 ```shell
-System:
-  OS: Windows 11 10.0.26200
-  CPU: (24) x64 AMD Ryzen AI 9 HX 370 w/ Radeon 890M
+GitHub Actions target:
+  OS: ubuntu-latest
 Binaries:
-  Node: 25.9.0
-  pnpm: 10.33.2
+  Node: 24
+  pnpm: 10
 ```
 
 package.json dependencies
@@ -38,10 +37,8 @@ package.json dependencies
 
 Steps to reproduce
 1. Open this reproduction project.
-2. Run `pnpm install --ignore-workspace`.
-3. Run `pnpm run typecheck:vue-tsgo`.
-4. Run `pnpm run typecheck:vue-tsc`.
-5. Inspect `docs/index.md`.
+2. Run the GitHub Actions workflow at `.github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml`.
+3. Inspect `docs/index.md`.
 
 What is expected?
 Both `vue-tsgo` and `vue-tsc` should accept this valid VitePress Markdown file:
@@ -57,7 +54,7 @@ Both `vue-tsgo` and `vue-tsc` should accept this valid VitePress Markdown file:
 - later Markdown prose contains ordinary inline code: `` `compat-finder` ``
 
 What is actually happening?
-`vue-tsgo` crashes during Markdown-to-SFC handling with:
+The workflow is set up to verify that `pnpm run docs:build` succeeds, `pnpm run typecheck:vue-tsc` succeeds, and `pnpm run typecheck:vue-tsgo` fails during Markdown-to-SFC handling with:
 
 ```text
 SyntaxError: Unexpected EOF in tag.

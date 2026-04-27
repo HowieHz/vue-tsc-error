@@ -14,6 +14,13 @@ System:
   pnpm: 10.33.2
 ```
 
+GitHub Actions
+```yaml
+ubuntu-latest
+Node 24
+pnpm 10
+```
+
 package.json dependencies
 ```json
 {
@@ -32,23 +39,28 @@ package.json dependencies
 
 Steps to reproduce
 1. Open this reproduction project.
-2. Run `pnpm install --ignore-workspace`.
-3. Run `pnpm run typecheck:vue-tsgo`.
-4. Run `pnpm run typecheck:vue-tsc`.
-5. Inspect `docs/index.md` and `docs/.vitepress/types/browser/lunar-javascript.d.ts`.
+2. Push the repo and trigger `.github/workflows/vitepress-vue-tsgo-missing-ambient-module.yml`, or run it with `workflow_dispatch`.
+3. Inspect the `Verify repro behavior` step.
+4. Inspect `docs/index.md` and `docs/.vitepress/types/browser/lunar-javascript.d.ts`.
 
 What is expected?
-`vue-tsgo` should resolve the ambient declaration file and accept this import from `docs/index.md`:
+Both CI checks should agree on this VitePress Markdown page. `vue-tsgo` should resolve the ambient declaration file and accept this import from `docs/index.md`:
 
 ```ts
 import { Lunar, Solar, type SolarInstance } from "lunar-javascript";
 ```
 
 What is actually happening?
-`vue-tsgo` reports:
+In CI, `vue-tsc` passes first, then `vue-tsgo` reports:
 
 ```text
 TS7016: Could not find a declaration file for module 'lunar-javascript'.
 ```
 
 The declaration file exists and is explicitly included by `tsconfig.json`, but the checker still behaves as if it was not loaded.
+
+The reproduction workflow is intentionally scripted to assert this split behavior:
+
+- `vue-tsc` must pass
+- `vue-tsgo` must fail
+- the `vue-tsgo` output must include `TS7016` or `Could not find a declaration file for module 'lunar-javascript'`

@@ -2,12 +2,21 @@
 
 Minimal VitePress reproduction for a `vue-tsgo` Markdown parsing failure.
 
-## Reproduce
+## CI Reproduce
+
+Workflow file: `.github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml`
+
+The workflow verifies this exact behavior:
+
+- `pnpm run docs:build` succeeds
+- `pnpm run typecheck:vue-tsc` succeeds
+- `pnpm run typecheck:vue-tsgo` fails with `SyntaxError: Unexpected EOF in tag.`
+
+## Local Commands
 
 ```bash
 pnpm install --ignore-workspace
-pnpm run typecheck:vue-tsgo
-pnpm run typecheck:vue-tsc
+pnpm run ci:repro
 ```
 
 ## Expected

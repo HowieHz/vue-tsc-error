@@ -6,8 +6,7 @@ Minimal VitePress reproduction for a `vue-tsgo` module declaration resolution fa
 
 ```bash
 pnpm install --ignore-workspace
-pnpm run typecheck:vue-tsgo
-pnpm run typecheck:vue-tsc
+pnpm run ci:repro
 ```
 
 ## Expected
@@ -23,3 +22,7 @@ Both `vue-tsgo` and `vue-tsc` should accept a VitePress Markdown page that:
 `vue-tsgo` reports `TS7016` for `lunar-javascript`, as if the declaration file was not loaded.
 
 `vue-tsc` should accept the same project without this error.
+
+## GitHub Actions
+
+This repo includes a workflow that reproduces the issue in CI for this directory only.

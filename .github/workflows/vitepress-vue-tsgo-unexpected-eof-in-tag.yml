@@ -1,0 +1,37 @@
+name: vitepress-vue-tsgo-unexpected-eof-in-tag
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml"
+      - "vitepress-vue-tsgo-unexpected-eof-in-tag/**"
+  pull_request:
+    paths:
+      - ".github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml"
+      - "vitepress-vue-tsgo-unexpected-eof-in-tag/**"
+  workflow_dispatch:
+
+jobs:
+  repro:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsgo-unexpected-eof-in-tag
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsgo-unexpected-eof-in-tag/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+
+      - name: Verify repro behavior
+        run: pnpm run ci:repro

@@ -6,6 +6,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
+    "ci:repro": "node scripts/verify-repro.mjs",
     "typecheck": "pnpm run typecheck:vue-tsgo",
     "typecheck:vue-tsc": "vue-tsc -p tsconfig.json --pretty false",
     "typecheck:vue-tsgo": "vue-tsgo -p tsconfig.json --pretty false"

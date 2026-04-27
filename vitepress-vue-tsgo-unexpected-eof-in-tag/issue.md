@@ -1,4 +1,4 @@
-Title: vue-tsgo misparses VitePress Markdown fixtures containing backticks and can crash with "Unexpected EOF in tag"
+Title: vue-tsgo misparses VitePress Markdown files with template literals inside HTML attributes and can crash with "Unexpected EOF in tag"
 
 Vue - Official extension or vue-tsgo version
 `vue-tsgo 0.2.0`
@@ -49,7 +49,16 @@ Both `vue-tsgo` and `vue-tsc` should accept these valid VitePress Markdown fixtu
 - `docs/cases/inline-then-template.md`
 
 What is actually happening?
-The workflow runs raw `vue-tsc` and `vue-tsgo` commands against each fixture. `vue-tsc` is used as the comparison baseline, while failing `vue-tsgo` runs expose the parser error directly in the Actions log, including errors like:
+In GitHub Actions run `25010969430`, `vue-tsc` is used as the comparison baseline and the four fixtures produce these outcomes:
+
+- `two-template-attrs`: `vue-tsgo` fails
+- `two-inline-codes`: `vue-tsgo` succeeds
+- `template-then-inline`: `vue-tsgo` fails
+- `inline-then-template`: `vue-tsgo` fails
+
+So in this repro set, the consistent trigger is not ordinary Markdown inline code by itself. The failures are the three fixtures that include JavaScript template literals inside HTML attributes.
+
+The failing `vue-tsgo` runs expose raw parser output in the Actions log, including errors like:
 
 ```text
 SyntaxError: Unexpected EOF in tag.

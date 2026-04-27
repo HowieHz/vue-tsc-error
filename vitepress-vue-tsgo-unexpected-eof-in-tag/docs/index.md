@@ -8,6 +8,4 @@ const count = 3;
   </button>
 </div>
 
-<div>
-  <input :aria-label="`Page ${count}`">
-</div>
+- `x`.

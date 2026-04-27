@@ -1,0 +1,21 @@
+{
+  "name": "vitepress-vue-tsgo-unexpected-eof-in-tag",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "typecheck": "pnpm run typecheck:vue-tsgo",
+    "typecheck:vue-tsc": "vue-tsc -p tsconfig.json --pretty false",
+    "typecheck:vue-tsgo": "vue-tsgo -p tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "vue": "^3.5.33"
+  },
+  "devDependencies": {
+    "vitepress": "2.0.0-alpha.17",
+    "vue-tsc": "^3.2.7",
+    "vue-tsgo": "^0.2.0"
+  }
+}

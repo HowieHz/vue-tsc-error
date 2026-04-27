@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "vueCompilerOptions": {
+    "extensions": [
+      ".vue"
+    ],
+    "vitePressExtensions": [
+      ".md"
+    ]
+  },
+  "include": [
+    "env.d.ts",
+    "docs/**/*.md",
+    "docs/.vitepress/**/*.ts",
+    "docs/.vitepress/types/browser/*.d.ts"
+  ]
+}

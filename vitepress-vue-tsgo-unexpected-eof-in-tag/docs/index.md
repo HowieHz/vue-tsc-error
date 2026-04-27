@@ -7,3 +7,7 @@ const count = 3;
     Visible page count: {{ count }}
   </button>
 </div>
+
+<div>
+  <input :aria-label="`Page ${count}`">
+</div>

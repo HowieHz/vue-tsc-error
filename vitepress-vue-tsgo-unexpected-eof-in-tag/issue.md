@@ -51,7 +51,7 @@ Both `vue-tsgo` and `vue-tsc` should accept this valid VitePress Markdown file:
 </button>
 ```
 
-- later Markdown prose contains ordinary inline code: `` `compat-finder` ``
+- later Markdown prose contains ordinary inline code: `` `x` ``
 
 What is actually happening?
 The workflow is set up to verify that `pnpm run docs:build` succeeds, `pnpm run typecheck:vue-tsc` succeeds, and `pnpm run typecheck:vue-tsgo` fails during Markdown-to-SFC handling with:

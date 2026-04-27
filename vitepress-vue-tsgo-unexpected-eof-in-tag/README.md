@@ -39,6 +39,6 @@ SyntaxError: Unexpected EOF in tag.
 This minimal repro uses:
 
 - a visible button with a valid `` :title="`Page ${count}`" `` template expression
-- a later Markdown list item containing inline code: `` `compat-finder` ``
+- a later Markdown list item containing inline code: `` `x` ``
 
 If either the template literal in the HTML attribute or the later Markdown inline code is removed, the failure goes away.

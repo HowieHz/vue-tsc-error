@@ -1,0 +1,65 @@
+name: vitepress-vue-tsc-template-string-locals
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vitepress-vue-tsc-template-string-locals.yml"
+      - "vitepress-vue-tsc-template-string-locals/**"
+  pull_request:
+    paths:
+      - ".github/workflows/vitepress-vue-tsc-template-string-locals.yml"
+      - "vitepress-vue-tsc-template-string-locals/**"
+  workflow_dispatch:
+
+jobs:
+  repro:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsc-template-string-locals
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsc-template-string-locals/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+
+      - name: Verify repro behavior
+        shell: bash
+        run: |
+          set +e
+          output="$(pnpm run typecheck 2>&1)"
+          status=$?
+          set -e
+
+          printf '%s\n' "$output"
+
+          if [ "$status" -eq 0 ]; then
+            echo "Expected vue-tsc to fail, but it passed." >&2
+            exit 1
+          fi
+
+          for fragment in \
+            "docs/index.md(2,26): error TS6133: 'hourValue' is declared but its value is never read." \
+            "docs/index.md(3,9): error TS6133: 'start' is declared but its value is never read." \
+            "docs/index.md(4,9): error TS6133: 'end' is declared but its value is never read."; do
+            if ! grep -Fq "$fragment" <<<"$output"; then
+              echo "Expected diagnostic not found: $fragment" >&2
+              exit 1
+            fi
+          done
+
+          {
+            echo "## Reproduction confirmed"
+            echo ""
+            echo "vue-tsc still reports the expected TS6133 diagnostics for template-string locals in VitePress Markdown."
+          } >> "$GITHUB_STEP_SUMMARY"

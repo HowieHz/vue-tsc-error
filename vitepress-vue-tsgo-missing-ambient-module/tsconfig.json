@@ -21,6 +21,6 @@
     "env.d.ts",
     "docs/**/*.md",
     "docs/.vitepress/**/*.ts",
-    "docs/.vitepress/types/browser/**/*.ts"
+    "docs/.vitepress/types/browser/*.ts"
   ]
 }

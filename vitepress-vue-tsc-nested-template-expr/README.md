@@ -1,17 +1,20 @@
 # vitepress-vue-tsc-nested-template-expr
 
-Minimal VitePress reproduction for a `vue-tsc` parsing failure in Markdown files.
+Minimal VitePress reproduction for checker differences around nested template literals in VitePress Markdown files.
 
 ## Reproduce
 
 ```bash
 pnpm install --ignore-workspace
-pnpm run typecheck
+pnpm run typecheck:vue-tsc
+pnpm run typecheck:vue-tsgo
+pnpm run typecheck:golar
+pnpm run ci:repro
 ```
 
 ## Expected
 
-`vue-tsc` should accept a valid nested template literal inside `<script setup lang="ts">` in a VitePress Markdown file.
+All three checkers should accept a valid nested template literal inside `<script setup lang="ts">` in a VitePress Markdown file.
 
 ## Actual
 
@@ -21,4 +24,4 @@ pnpm run typecheck
 const label = `Zodiac ${zodiac}${zodiacEmoji ? ` ${zodiacEmoji}` : ""}`;
 ```
 
-The same JavaScript expression runs correctly in Node.js. This repro keeps everything else minimal so the failure stays focused on VitePress Markdown handling.
+The CI workflow runs `vue-tsc`, `vue-tsgo`, and `golar tsc`, records all three outcomes, and currently expects both `vue-tsc` and `golar` to reproduce the TS1005 diagnostics.

@@ -12,6 +12,15 @@ importers:
         specifier: ^3.5.33
         version: 3.5.33(typescript@6.0.3)
     devDependencies:
+      '@golar/vue':
+        specifier: ^0.1.7
+        version: 0.1.7
+      golar:
+        specifier: ^0.1.7
+        version: 0.1.7
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
       vitepress:
         specifier: 2.0.0-alpha.17
         version: 2.0.0-alpha.17(postcss@8.5.12)(typescript@6.0.3)
@@ -256,6 +265,64 @@ packages:
   '@esbuild/win32-x64@0.27.7':
     resolution: {integrity: sha512-56hiAJPhwQ1R4i+21FVF7V8kSD5zZTdHcVuRFMW0hn753vVfQN8xlx4uOPT4xoGH0Z/oVATuR82AiqSTDIpaHg==}
     engines: {node: '>=18'}
+    cpu: [x64]
+    os: [win32]
+
+  '@golar/darwin-arm64@0.1.7':
+    resolution: {integrity: sha512-AgX91/bN8bXlNVRlX0LxVGiW4BI2ZCr3H+TB/Mf05/NMna2/ZgEeNkViAM2TxsmqJILDw1ASud7llNjg0HTAsQ==}
+    engines: {node: '>=22.12.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@golar/darwin-x64@0.1.7':
+    resolution: {integrity: sha512-bM01AWc5h6w6ARnorHkzmOXQzc8lMbx/ad58WrA6MOvdTqlZ3EunGrnpwfPWQjPDZwko/pkE7lZavnG5Kry4bw==}
+    engines: {node: '>=22.12.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@golar/linux-arm64-musl@0.1.7':
+    resolution: {integrity: sha512-puIqJJQY54EPaUa7WyfHKX1ZaddFQ0TkSJ6D9AN4npewUteigvcFMTuclOEHsUYm5F6/LJZ5Wel5069h1ogeAQ==}
+    engines: {node: '>=22.12.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@golar/linux-arm64@0.1.7':
+    resolution: {integrity: sha512-9W2KqY4JQjf9zIrs9C+pkwnj31eMJ2I2n5jYcwETRuNaO/1lb4Z1nxu4uUedRSENTNF2a7PFeotbSI/y6cBz/w==}
+    engines: {node: '>=22.12.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@golar/linux-x64-musl@0.1.7':
+    resolution: {integrity: sha512-0iEC1ySVINvUHdKgxcH/0OkXipXIcWWVAQDRdEMshPBJFHssUBfBhbOAnrM4UAkFPc8ojRpNJPqpCYCbVtM0pg==}
+    engines: {node: '>=22.12.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@golar/linux-x64@0.1.7':
+    resolution: {integrity: sha512-kN4oAL5+GOWdfdqGAV14wyGd/DL6VyA2NR1FJ0ekYWOQuWSTqSh4oL5iZK7Bc+hH/u8NjxFyuZ9DrRdgIvpd7w==}
+    engines: {node: '>=22.12.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@golar/util@0.1.7':
+    resolution: {integrity: sha512-iu8UyJdoIoCM+JdbixM4R1umsgm1RKijM5+JpUbb2tw5xTJ0L94SC9HUk62wD0RE6RNJnOWH+nwV8ZU+cep5aQ==}
+    engines: {node: '>=22.12.0'}
+
+  '@golar/volar@0.1.7':
+    resolution: {integrity: sha512-J57fUqWc516++RczFXKxhy6z/MSIbxmyGH2hSlUucQ9WUMtemnpEZPUy3K8h8OU4PCbLnX1eUJZbq5Kpup8qRA==}
+    engines: {node: '>=22.12.0'}
+
+  '@golar/vue@0.1.7':
+    resolution: {integrity: sha512-WbMLWXHY+MR3z/T1fMWDKjGybJEWSs6RRbxBtQkMJb5lvwp/vwE/bwPSYPHtKU+BMgeO1pv3vqLyuT+4wFMGig==}
+    engines: {node: '>=22.12.0'}
+
+  '@golar/win32-x64@0.1.7':
+    resolution: {integrity: sha512-iUiqE9jtT0cO18ME1jLtdd1J3zu/VfQZ7vQWARFtzHqCf5oMAvbdyAmIspSqOcTmPd5YXqMZRUC+P6+f0CJRwA==}
+    engines: {node: '>=22.12.0'}
     cpu: [x64]
     os: [win32]
 
@@ -807,6 +874,9 @@ packages:
   '@vue/devtools-shared@8.1.1':
     resolution: {integrity: sha512-+h4ttmJYl/txpxHKaoZcaKpC+pvckgLzIDiSQlaQ7kKthKh8KuwoLW2D8hPJEnqKzXOvu15UHEoGyngAXCz0EQ==}
 
+  '@vue/language-core@3.2.5':
+    resolution: {integrity: sha512-d3OIxN/+KRedeM5wQ6H6NIpwS3P5gC9nmyaHgBk+rO6dIsjY+tOh4UlPpiZbAh3YtLdCGEX4M16RmsBqPmJV+g==}
+
   '@vue/language-core@3.2.7':
     resolution: {integrity: sha512-Gn4q/tRxbpVGLEuARQ43p3YELlNAFgRUVCgW9U5Cr+5q4vfD2bWDWpl3ABbJMXUt5xlE1dF8dkigg2aUq7JYYw==}
 
@@ -918,6 +988,10 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
+  detect-libc@2.1.2:
+    resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
+    engines: {node: '>=8'}
+
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
@@ -966,6 +1040,11 @@ packages:
   get-tsconfig@5.0.0-beta.4:
     resolution: {integrity: sha512-7nF7C9fIPFEMHgEMEfgIlO9wDdZ8CyHw27rWciFZfHvHDReIiPhsYuzPRXsfvBCqFy1l8RRyyWV7QLM+ZhUJsQ==}
     engines: {node: '>=20.20.0'}
+
+  golar@0.1.7:
+    resolution: {integrity: sha512-GcPGCXiiMneuNE8Ri6XadGHBEe25sy2Un3c3uLhWmTgh/vaKmehykq6CenjIXq2u0Dzy5eeeZ6HfW+J6TYVDLw==}
+    engines: {node: '>=22.12.0'}
+    hasBin: true
 
   hast-util-to-html@9.0.5:
     resolution: {integrity: sha512-OguPdidb+fbHQSU4Q4ZiLKnzWo8Wwsf5bZfbvu7//a9oTYoqD/fWpe96NuHkoS9h0ccGOTe0C4NGXdtS0iObOw==}
@@ -1408,6 +1487,41 @@ snapshots:
   '@esbuild/win32-x64@0.27.7':
     optional: true
 
+  '@golar/darwin-arm64@0.1.7':
+    optional: true
+
+  '@golar/darwin-x64@0.1.7':
+    optional: true
+
+  '@golar/linux-arm64-musl@0.1.7':
+    optional: true
+
+  '@golar/linux-arm64@0.1.7':
+    optional: true
+
+  '@golar/linux-x64-musl@0.1.7':
+    optional: true
+
+  '@golar/linux-x64@0.1.7':
+    optional: true
+
+  '@golar/util@0.1.7': {}
+
+  '@golar/volar@0.1.7':
+    dependencies:
+      '@volar/language-core': 2.4.28
+      golar: 0.1.7
+
+  '@golar/vue@0.1.7':
+    dependencies:
+      '@golar/util': 0.1.7
+      '@golar/volar': 0.1.7
+      '@vue/compiler-dom': 3.5.33
+      '@vue/language-core': 3.2.5
+
+  '@golar/win32-x64@0.1.7':
+    optional: true
+
   '@iconify-json/simple-icons@1.2.80':
     dependencies:
       '@iconify/types': 2.0.0
@@ -1810,6 +1924,16 @@ snapshots:
 
   '@vue/devtools-shared@8.1.1': {}
 
+  '@vue/language-core@3.2.5':
+    dependencies:
+      '@volar/language-core': 2.4.28
+      '@vue/compiler-dom': 3.5.33
+      '@vue/shared': 3.5.33
+      alien-signals: 3.1.2
+      muggle-string: 0.4.1
+      path-browserify: 1.0.1
+      picomatch: 4.0.4
+
   '@vue/language-core@3.2.7':
     dependencies:
       '@volar/language-core': 2.4.28
@@ -1896,6 +2020,8 @@ snapshots:
 
   dequal@2.0.3: {}
 
+  detect-libc@2.1.2: {}
+
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
@@ -1959,6 +2085,20 @@ snapshots:
   get-tsconfig@5.0.0-beta.4:
     dependencies:
       resolve-pkg-maps: 1.0.0
+
+  golar@0.1.7:
+    dependencies:
+      '@golar/util': 0.1.7
+      detect-libc: 2.1.2
+      tinyglobby: 0.2.16
+    optionalDependencies:
+      '@golar/darwin-arm64': 0.1.7
+      '@golar/darwin-x64': 0.1.7
+      '@golar/linux-arm64': 0.1.7
+      '@golar/linux-arm64-musl': 0.1.7
+      '@golar/linux-x64': 0.1.7
+      '@golar/linux-x64-musl': 0.1.7
+      '@golar/win32-x64': 0.1.7
 
   hast-util-to-html@9.0.5:
     dependencies:

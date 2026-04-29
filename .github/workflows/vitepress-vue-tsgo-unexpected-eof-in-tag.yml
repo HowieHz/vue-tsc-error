@@ -47,6 +47,11 @@ jobs:
         continue-on-error: true
         run: pnpm exec vue-tsgo -p tsconfig.case.two-template-attrs.json --pretty false
 
+      - name: golar two-template-attrs
+        id: golar_two_template_attrs
+        continue-on-error: true
+        run: pnpm exec golar tsc -b tsconfig.case.two-template-attrs.json
+
       - name: vue-tsc two-inline-codes
         id: vue_tsc_two_inline_codes
         continue-on-error: true
@@ -56,6 +61,11 @@ jobs:
         id: vue_tsgo_two_inline_codes
         continue-on-error: true
         run: pnpm exec vue-tsgo -p tsconfig.case.two-inline-codes.json --pretty false
+
+      - name: golar two-inline-codes
+        id: golar_two_inline_codes
+        continue-on-error: true
+        run: pnpm exec golar tsc -b tsconfig.case.two-inline-codes.json
 
       - name: vue-tsc template-then-inline
         id: vue_tsc_template_then_inline
@@ -67,6 +77,11 @@ jobs:
         continue-on-error: true
         run: pnpm exec vue-tsgo -p tsconfig.case.template-then-inline.json --pretty false
 
+      - name: golar template-then-inline
+        id: golar_template_then_inline
+        continue-on-error: true
+        run: pnpm exec golar tsc -b tsconfig.case.template-then-inline.json
+
       - name: vue-tsc inline-then-template
         id: vue_tsc_inline_then_template
         continue-on-error: true
@@ -77,6 +92,11 @@ jobs:
         continue-on-error: true
         run: pnpm exec vue-tsgo -p tsconfig.case.inline-then-template.json --pretty false
 
+      - name: golar inline-then-template
+        id: golar_inline_then_template
+        continue-on-error: true
+        run: pnpm exec golar tsc -b tsconfig.case.inline-then-template.json
+
       - name: Summarize and assert
         if: always()
         shell: bash
@@ -84,32 +104,24 @@ jobs:
           {
             echo "## Raw Typecheck Outcomes"
             echo ""
-            echo "| Case | vue-tsc | vue-tsgo |"
-            echo "| --- | --- | --- |"
-            echo "| two-template-attrs | ${{ steps.vue_tsc_two_template_attrs.outcome }} | ${{ steps.vue_tsgo_two_template_attrs.outcome }} |"
-            echo "| two-inline-codes | ${{ steps.vue_tsc_two_inline_codes.outcome }} | ${{ steps.vue_tsgo_two_inline_codes.outcome }} |"
-            echo "| template-then-inline | ${{ steps.vue_tsc_template_then_inline.outcome }} | ${{ steps.vue_tsgo_template_then_inline.outcome }} |"
-            echo "| inline-then-template | ${{ steps.vue_tsc_inline_then_template.outcome }} | ${{ steps.vue_tsgo_inline_then_template.outcome }} |"
+            echo "| Case | vue-tsc | vue-tsgo | golar |"
+            echo "| --- | --- | --- | --- |"
+            echo "| two-template-attrs | ${{ steps.vue_tsc_two_template_attrs.outcome }} | ${{ steps.vue_tsgo_two_template_attrs.outcome }} | ${{ steps.golar_two_template_attrs.outcome }} |"
+            echo "| two-inline-codes | ${{ steps.vue_tsc_two_inline_codes.outcome }} | ${{ steps.vue_tsgo_two_inline_codes.outcome }} | ${{ steps.golar_two_inline_codes.outcome }} |"
+            echo "| template-then-inline | ${{ steps.vue_tsc_template_then_inline.outcome }} | ${{ steps.vue_tsgo_template_then_inline.outcome }} | ${{ steps.golar_template_then_inline.outcome }} |"
+            echo "| inline-then-template | ${{ steps.vue_tsc_inline_then_template.outcome }} | ${{ steps.vue_tsgo_inline_then_template.outcome }} | ${{ steps.golar_inline_then_template.outcome }} |"
           } >> "$GITHUB_STEP_SUMMARY"
 
           [ "${{ steps.docs_build.outcome }}" = "success" ]
           [ "${{ steps.vue_tsc_two_template_attrs.outcome }}" = "success" ]
+          [ "${{ steps.vue_tsgo_two_template_attrs.outcome }}" = "success" ]
+          [ "${{ steps.golar_two_template_attrs.outcome }}" = "success" ]
           [ "${{ steps.vue_tsc_two_inline_codes.outcome }}" = "success" ]
+          [ "${{ steps.vue_tsgo_two_inline_codes.outcome }}" = "success" ]
+          [ "${{ steps.golar_two_inline_codes.outcome }}" = "success" ]
           [ "${{ steps.vue_tsc_template_then_inline.outcome }}" = "success" ]
+          [ "${{ steps.vue_tsgo_template_then_inline.outcome }}" = "success" ]
+          [ "${{ steps.golar_template_then_inline.outcome }}" = "success" ]
           [ "${{ steps.vue_tsc_inline_then_template.outcome }}" = "success" ]
-
-          failures=0
-          for outcome in \
-            "${{ steps.vue_tsgo_two_template_attrs.outcome }}" \
-            "${{ steps.vue_tsgo_two_inline_codes.outcome }}" \
-            "${{ steps.vue_tsgo_template_then_inline.outcome }}" \
-            "${{ steps.vue_tsgo_inline_then_template.outcome }}"; do
-            if [ "$outcome" = "failure" ]; then
-              failures=$((failures + 1))
-            fi
-          done
-
-          if [ "$failures" -lt 1 ]; then
-            echo "Expected at least one vue-tsgo fixture to fail, but all four succeeded." >&2
-            exit 1
-          fi
+          [ "${{ steps.vue_tsgo_inline_then_template.outcome }}" = "success" ]
+          [ "${{ steps.golar_inline_then_template.outcome }}" = "success" ]

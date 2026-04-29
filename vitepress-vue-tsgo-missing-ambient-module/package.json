@@ -7,6 +7,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "typecheck": "pnpm run typecheck:vue-tsgo",
+    "typecheck:golar": "golar tsc -b tsconfig.json",
     "typecheck:vue-tsc": "vue-tsc -p tsconfig.json --pretty false",
     "typecheck:vue-tsgo": "vue-tsgo -p tsconfig.json --pretty false"
   },
@@ -15,7 +16,10 @@
     "vue": "^3.5.33"
   },
   "devDependencies": {
+    "@golar/vue": "^0.1.7",
     "@typescript/native-preview": "7.0.0-dev.20260429.1",
+    "golar": "^0.1.7",
+    "typescript": "^6.0.3",
     "vitepress": "2.0.0-alpha.17",
     "vue-tsc": "^3.2.7",
     "vue-tsgo": "^0.2.1"

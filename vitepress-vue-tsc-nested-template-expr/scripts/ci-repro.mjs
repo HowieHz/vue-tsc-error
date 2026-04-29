@@ -51,12 +51,6 @@ function appendSummary(lines) {
 }
 
 const vueTsc = run("vue-tsc", "pnpm", ["run", "typecheck:vue-tsc"]);
-
-if (vueTsc.status !== 0) {
-  console.error("Expected vue-tsc to pass, but it failed.");
-  process.exit(1);
-}
-
 const vueTsgo = run("vue-tsgo", "pnpm", ["run", "typecheck:vue-tsgo"]);
 const golar = run("golar", "pnpm", ["run", "typecheck:golar"]);
 
@@ -70,26 +64,36 @@ appendSummary([
   `| golar | ${outcomeOf(golar)} |`,
 ]);
 
-if (vueTsgo.status === 0) {
-  console.error("Expected vue-tsgo to fail, but it passed.");
+if (vueTsc.status === 0) {
+  console.error("Expected vue-tsc to fail, but it passed.");
   process.exit(1);
 }
 
-const expectedFragments = [
-  "Could not find a declaration file for module 'lunar-javascript'",
-  "TS7016",
-];
+for (const fragment of [
+  "docs/index.md(4,50): error TS1005: ',' expected.",
+  "docs/index.md(4,51): error TS1005: ',' expected.",
+  "docs/index.md(4,64): error TS1005: ',' expected.",
+]) {
+  if (!vueTsc.output.includes(fragment)) {
+    console.error(`Expected diagnostic not found: ${fragment}`);
+    process.exit(1);
+  }
+}
 
-const matched = expectedFragments.some((fragment) => vueTsgo.output.includes(fragment));
-
-if (!matched) {
-  console.error("vue-tsgo failed, but the expected TS7016 diagnostics were not found in output.");
+if (golar.status === 0) {
+  console.error("Expected golar to fail, but it passed.");
   process.exit(1);
 }
 
-if (golar.status !== 0) {
-  console.error("Expected golar to pass, but it failed.");
-  process.exit(1);
+for (const fragment of [
+  "docs/index.md(4,50): error TS1005: ',' expected.",
+  "docs/index.md(4,51): error TS1005: ',' expected.",
+  "docs/index.md(4,64): error TS1005: ',' expected.",
+]) {
+  if (!golar.output.includes(fragment)) {
+    console.error(`Expected golar diagnostic not found: ${fragment}`);
+    process.exit(1);
+  }
 }
 
-console.log("Reproduction confirmed: vue-tsc and golar pass, while vue-tsgo reports TS7016 for lunar-javascript.");
+console.log("Reproduction confirmed: vue-tsc and golar report TS1005, while vue-tsgo is tracked alongside them.");

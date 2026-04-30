@@ -1,0 +1,23 @@
+{
+  "name": "vitepress-golar-missing-global-in-markdown",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ci:repro": "node ./scripts/ci-repro.mjs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "typecheck:golar": "golar tsc -b tsconfig.json",
+    "typecheck:vue-tsc": "vue-tsc -b tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "vue": "^3.5.32"
+  },
+  "devDependencies": {
+    "@golar/vue": "^0.1.7",
+    "compat-finder": "^2.1.0",
+    "golar": "^0.1.7",
+    "typescript": "^6.0.3",
+    "vitepress": "2.0.0-alpha.17",
+    "vue-tsc": "^3.2.7"
+  }
+}

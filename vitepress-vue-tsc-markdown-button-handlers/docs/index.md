@@ -41,7 +41,6 @@ const TARGET_PREVIEW_LIMIT = 8;
 
 const targetCountText = ref("5");
 const targetNames = ref<string[]>([]);
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; state is used by the Markdown template below.
 const inputMode = ref<InputMode>("list");
 const status = ref<TestStatus>("idle");
 const currentRoundCount = ref(0);
@@ -86,7 +85,7 @@ const visibleTargetRange = computed(() => {
     end: Math.min(start + TARGET_PREVIEW_COUNT - 1, count),
   };
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const visibleTargetRows = computed<TargetRow[]>(() => {
   const { start, end } = visibleTargetRange.value;
   return Array.from({ length: Math.max(end - start + 1, 0) }, (_, index) => {
@@ -97,7 +96,7 @@ const visibleTargetRows = computed<TargetRow[]>(() => {
     };
   });
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const bulkImportDescription = computed(() => {
   const count = targetCount.value ?? 0;
   return count > 0
@@ -122,9 +121,9 @@ const bulkInputValue = computed({
     }
   },
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const isRoundActive = computed(() => status.value === "testing");
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const currentGroupSummary = computed(() => {
   const count = currentStep.value?.promptTargetCount ?? 0;
   if (count === 0) {
@@ -143,11 +142,11 @@ const currentAnnouncement = computed(() => {
     Number.MAX_SAFE_INTEGER,
   )}.`;
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const latestHistory = computed(() => testHistory.value.toReversed());
 const canUndoLastTest = computed(() => testHistory.value.length > 0 && currentRoundCount.value > 0);
 const previousPromptRanges = computed(() => testHistory.value.at(-1)?.targetRanges ?? []);
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const targetsUnchanged = computed(() => {
   if (!diffModeEnabled.value || !currentStep.value) {
     return [];
@@ -155,7 +154,7 @@ const targetsUnchanged = computed(() => {
 
   return intersectTargetRanges(currentStep.value.promptTargetRanges, previousPromptRanges.value);
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const targetsToAdd = computed(() => {
   if (!diffModeEnabled.value || !currentStep.value) {
     return [];
@@ -163,7 +162,7 @@ const targetsToAdd = computed(() => {
 
   return subtractTargetRanges(currentStep.value.promptTargetRanges, previousPromptRanges.value);
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const targetsToRemove = computed(() => {
   if (!diffModeEnabled.value || !currentStep.value) {
     return [];
@@ -171,13 +170,13 @@ const targetsToRemove = computed(() => {
 
   return subtractTargetRanges(previousPromptRanges.value, currentStep.value.promptTargetRanges);
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const confirmedTargetSet = computed(() => (
   new Set(
     currentStep.value ? getAllTargetsFromRanges(currentStep.value.debug.confirmedTargetRanges) : [],
   )
 ));
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const progressText = computed(() => {
   if (status.value === "idle") {
     return "Not started";
@@ -185,7 +184,7 @@ const progressText = computed(() => {
 
   return `${testHistory.value.length} test runs completed`;
 });
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; computed value is used by the Markdown template below.
+
 const resultLabel = computed(() => (
   incompatibleTargets.value.length > 0
     ? `The following ${incompatibleTargets.value.length} targets have compatibility issues`
@@ -229,7 +228,7 @@ function parseTargetCount(value: string) {
   return count >= 1 ? count : undefined;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function handleTargetCountInput(event: Event) {
   const input = event.currentTarget;
   if (!(input instanceof HTMLInputElement)) {
@@ -248,13 +247,13 @@ function stepTargetCount(delta: number) {
   targetCountText.value = String(nextCount);
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function stepTargetListPage(delta: number) {
   const nextPage = targetListPage.value + delta;
   targetListPage.value = Math.min(Math.max(nextPage, 1), targetListPageCount.value);
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 async function startEditingTargetListPage() {
   isEditingTargetListPage.value = true;
   targetListPageText.value = String(targetListPage.value);
@@ -263,7 +262,7 @@ async function startEditingTargetListPage() {
   targetListPageInputRef.value?.select();
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function handleTargetListPageInput(event: Event) {
   const input = event.currentTarget;
   if (!(input instanceof HTMLInputElement)) {
@@ -275,7 +274,7 @@ function handleTargetListPageInput(event: Event) {
   targetListPageText.value = normalizedValue;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function finishEditingTargetListPage() {
   const parsedPage = Number.parseInt(targetListPageText.value, 10);
   if (Number.isNaN(parsedPage)) {
@@ -289,13 +288,13 @@ function finishEditingTargetListPage() {
   isEditingTargetListPage.value = false;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function cancelEditingTargetListPage() {
   targetListPageText.value = String(targetListPage.value);
   isEditingTargetListPage.value = false;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function handleBulkImportInput(event: Event) {
   const input = event.currentTarget;
   if (!(input instanceof HTMLTextAreaElement)) {
@@ -305,7 +304,7 @@ function handleBulkImportInput(event: Event) {
   bulkInputValue.value = input.value;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function handleTargetNameInput(event: Event, index: number) {
   const input = event.currentTarget;
   if (!(input instanceof HTMLInputElement)) {
@@ -326,7 +325,7 @@ function getTargetLabel(index: number) {
   return name.length > 0 ? name : `Target ${index}`;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; parameter is used inside template string.
+
 function getConfirmedTargetA11yLabel(index: number) {
   return `${getTargetLabel(index)} (confirmed)`;
 }
@@ -348,7 +347,6 @@ function getTargetRangeCount(ranges: readonly TargetRange[]) {
   return ranges.reduce((total, range) => total + Math.max(range.end - range.start + 1, 0), 0);
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; helper is used by the Markdown template below.
 function formatTargetRanges(ranges: readonly TargetRange[], limit = TARGET_PREVIEW_LIMIT) {
   const count = getTargetRangeCount(ranges);
   const previewTargets = takeTargetsFromRanges(ranges, limit);
@@ -395,7 +393,7 @@ async function startTest() {
   }
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 function answerCurrentTest(hasIssue: boolean) {
   if (status.value !== "testing" || !engineState.value || !currentStep.value) {
     return;
@@ -426,7 +424,7 @@ function rebuildEngineStateFromHistory() {
   return nextState;
 }
 
-// @ts-expect-error TS6133: vue-tsc false positive in VitePress Markdown; handler is used by the Markdown template below.
+
 async function undoLastTest() {
   if (!canUndoLastTest.value) {
     return;
@@ -1004,640 +1002,3 @@ For example, suppose you have a pack with 20 mods or plugins. It fails to start,
 After a few rounds, the range narrows to the specific targets involved. That lets you avoid testing every item one by one from the start or relying entirely on guesswork.
 
 This works well for troubleshooting mods in games such as Minecraft, The Elder Scrolls, The Sims, RimWorld, Stardew Valley, Terraria, Mount & Blade, Garry's Mod, and Left 4 Dead. It can also help with userscripts, browser extensions, Rainmeter skins, and other cases where compatibility conflicts need to be isolated.
-
-### Finding conflicts with your own plugin
-
-If you wrote a plugin and want to find which of 10 other plugins conflict with it, keep your own plugin enabled at all times and use only the other 10 plugins as test targets.
-
-When the page tells you which targets to test, run them alongside your own plugin. The final result is the set of targets that conflict with it.
-
-<style scoped>
-.compat-test-tool {
-  display: grid;
-  gap: 14px;
-  max-width: 760px;
-  margin: 16px 0 24px;
-  padding: 16px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  background: var(--vp-c-bg-soft);
-}
-
-.compat-test-tool h2 {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  font-size: 1rem;
-}
-
-.compat-test-tool label {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-.compat-test-tool input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.compat-test-tool textarea {
-  width: 100%;
-  min-height: 96px;
-  padding: 10px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg);
-  resize: vertical;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.compat-test-tool input[aria-invalid="true"] {
-  border-color: var(--vp-c-danger-1);
-}
-
-.compat-test-tool button {
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-}
-
-.compat-test-tool button:disabled {
-  cursor: not-allowed;
-  opacity: 0.58;
-}
-
-.compat-test-tool__setup {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: end;
-}
-
-.compat-test-tool__field {
-  min-width: 0;
-}
-
-.compat-test-tool__field-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-
-.compat-test-tool__count-stepper {
-  display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) 40px;
-  gap: 6px;
-}
-
-.compat-test-tool__count-stepper button {
-  background: var(--vp-c-bg);
-}
-
-.compat-test-tool__empty,
-.compat-test-tool__error {
-  margin: 6px 0 0;
-  font-size: 0.92rem;
-}
-
-.compat-test-tool__empty {
-  color: color-mix(in srgb, var(--vp-c-text-1) 72%, var(--vp-c-text-2) 28%);
-}
-
-.compat-test-tool__error {
-  color: var(--vp-c-danger-1);
-}
-
-.compat-test-tool__error--inline {
-  margin: 0;
-  text-align: right;
-}
-
-.compat-test-tool__target-panel,
-.compat-test-tool__test-panel,
-.compat-test-tool__history {
-  display: grid;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--vp-c-divider) 88%, transparent);
-  border-radius: 12px;
-  background: var(--vp-c-bg);
-}
-
-.compat-test-tool__label-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.compat-test-tool__test-panel .compat-test-tool__label-row {
-  align-items: center;
-}
-
-.compat-test-tool__label-row-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.compat-test-tool__label-row > span {
-  font-size: 0.88rem;
-  color: color-mix(in srgb, var(--vp-c-text-1) 70%, var(--vp-c-text-2) 30%);
-  white-space: nowrap;
-}
-
-.compat-test-tool label.compat-test-tool__switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  margin-bottom: 0;
-  line-height: 1;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.compat-test-tool__switch input,
-.compat-test-tool__mode-switch input {
-  display: block;
-  flex: none;
-  box-sizing: border-box;
-  width: 38px;
-  height: 22px;
-  margin: 0;
-  padding: 0;
-  appearance: none;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--vp-c-bg-soft) 80%, var(--vp-c-bg));
-  position: relative;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.compat-test-tool__switch span {
-  display: inline-flex;
-  align-items: center;
-  line-height: 1.2;
-}
-
-.compat-test-tool__switch .compat-test-tool__input-mode-label {
-  font-weight: 400;
-}
-
-.compat-test-tool__switch input::after,
-.compat-test-tool__mode-switch input::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--vp-c-bg);
-  box-shadow: 0 1px 3px rgb(15 23 42 / 0.18);
-  transition: transform 0.2s ease;
-}
-
-.compat-test-tool__switch input:checked,
-.compat-test-tool__mode-switch input:checked {
-  border-color: var(--vp-c-brand-1);
-  background: color-mix(in srgb, var(--vp-c-brand-1) 78%, white);
-}
-
-.compat-test-tool__switch input:checked::after,
-.compat-test-tool__mode-switch input:checked::after {
-  transform: translateX(16px);
-}
-
-.compat-test-tool__input-mode {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.compat-test-tool__input-mode-label {
-  font-size: 0.88rem;
-  color: color-mix(in srgb, var(--vp-c-text-1) 62%, var(--vp-c-text-2) 38%);
-  white-space: nowrap;
-}
-
-.compat-test-tool__input-mode-label--active {
-  color: var(--vp-c-brand-1);
-  font-weight: 700;
-}
-
-.compat-test-tool label.compat-test-tool__mode-switch {
-  display: inline-flex;
-  margin: 0;
-  cursor: pointer;
-}
-
-.compat-test-tool__bulk-import-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.compat-test-tool__pagination {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.compat-test-tool__bulk-import-actions span,
-.compat-test-tool__page-status {
-  font-size: 0.88rem;
-  color: color-mix(in srgb, var(--vp-c-text-1) 70%, var(--vp-c-text-2) 30%);
-}
-
-.compat-test-tool__page-status {
-  white-space: nowrap;
-}
-
-.compat-test-tool__page-status-slot {
-  display: flex;
-  justify-content: center;
-}
-
-.compat-test-tool__page-status-button {
-  min-height: 38px;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: color-mix(in srgb, var(--vp-c-text-1) 70%, var(--vp-c-text-2) 30%);
-  font-size: 0.88rem;
-  font-weight: 500;
-  cursor: pointer;
-  transform: none;
-  box-shadow: none;
-}
-
-.compat-test-tool__page-status-button:hover:not(:disabled) {
-  transform: none;
-  box-shadow: none;
-  color: var(--vp-c-brand-1);
-}
-
-.compat-test-tool__page-status-input {
-  width: 100%;
-  min-width: 0;
-  min-height: 38px;
-  padding: 8px 12px;
-  text-align: center;
-}
-
-.compat-test-tool__bulk-import {
-  display: grid;
-  gap: 8px;
-  padding: 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg-soft);
-}
-
-.compat-test-tool__target-list {
-  display: grid;
-  gap: 8px;
-  max-height: 300px;
-  margin: 0;
-  padding: 0 12px 0 0;
-  overflow: auto;
-  scrollbar-gutter: stable;
-  list-style: none;
-}
-
-.compat-test-tool__target-item {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  gap: 8px;
-  align-items: center;
-}
-
-.compat-test-tool__target-index {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg-soft);
-  color: color-mix(in srgb, var(--vp-c-text-1) 76%, var(--vp-c-text-2) 24%);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.compat-test-tool__prompt,
-.compat-test-tool__result-card {
-  display: grid;
-  gap: 6px;
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 28%, var(--vp-c-divider));
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--vp-c-brand-soft) 64%, var(--vp-c-bg));
-}
-
-.compat-test-tool__prompt-kicker {
-  margin: 0;
-  color: color-mix(in srgb, var(--vp-c-text-1) 72%, var(--vp-c-text-2) 28%);
-  font-size: 0.9rem;
-}
-
-.compat-test-tool__prompt-text {
-  margin: 0;
-  font-size: 1.08rem;
-  font-weight: 700;
-  line-height: 1.55;
-}
-
-.compat-test-tool__chip-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.compat-test-tool__diff-group {
-  display: grid;
-  gap: 6px;
-}
-
-.compat-test-tool__diff-label {
-  margin: 0;
-  font-size: 0.88rem;
-  color: color-mix(in srgb, var(--vp-c-text-1) 72%, var(--vp-c-text-2) 28%);
-}
-
-.compat-test-tool__chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 4px 10px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 999px;
-  background: var(--vp-c-bg-soft);
-  font-size: 0.9rem;
-}
-
-.compat-test-tool__chip--add {
-  border-color: color-mix(in srgb, var(--vp-c-green-1) 42%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-green-soft) 64%, var(--vp-c-bg));
-  color: color-mix(in srgb, var(--vp-c-green-1) 78%, var(--vp-c-text-1));
-}
-
-.compat-test-tool__chip--remove {
-  border-color: color-mix(in srgb, var(--vp-c-danger-1) 42%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-danger-soft) 58%, var(--vp-c-bg));
-  color: var(--vp-c-danger-1);
-}
-
-.compat-test-tool__chip--confirmed {
-  border-color: color-mix(in srgb, var(--vp-c-brand-1) 48%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-brand-soft) 72%, var(--vp-c-bg));
-  color: color-mix(in srgb, var(--vp-c-brand-1) 82%, var(--vp-c-text-1));
-  font-weight: 700;
-}
-
-.compat-test-tool__result-targets {
-  display: grid;
-  gap: 8px;
-}
-
-.compat-test-tool__complete-result {
-  display: grid;
-  gap: 12px;
-}
-
-.compat-test-tool__diff-empty {
-  font-size: 0.9rem;
-  color: color-mix(in srgb, var(--vp-c-text-1) 68%, var(--vp-c-text-2) 32%);
-}
-
-.compat-test-tool__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.compat-test-tool__primary-button,
-.compat-test-tool__secondary-button,
-.compat-test-tool__success-button,
-.compat-test-tool__danger-button {
-  padding: 9px 14px;
-}
-
-.compat-test-tool__primary-button {
-  border-color: var(--vp-c-brand-1);
-  background: var(--vp-c-brand-1);
-  color: var(--vp-c-white);
-}
-
-.compat-test-tool__secondary-button {
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-}
-
-.compat-test-tool__success-button {
-  border-color: color-mix(in srgb, var(--vp-c-green-1) 45%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-green-soft) 56%, var(--vp-c-bg));
-  color: color-mix(in srgb, var(--vp-c-green-1) 82%, var(--vp-c-text-1));
-}
-
-.compat-test-tool__danger-button {
-  border-color: color-mix(in srgb, var(--vp-c-danger-1) 45%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-danger-soft) 50%, var(--vp-c-bg));
-  color: var(--vp-c-danger-1);
-}
-
-.compat-test-tool__history-list {
-  display: grid;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.compat-test-tool__history-list li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px;
-  align-items: start;
-  min-width: 0;
-}
-
-.compat-test-tool__history-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 3px 9px;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.compat-test-tool__history-badge--issue {
-  background: color-mix(in srgb, var(--vp-c-danger-soft) 64%, var(--vp-c-bg));
-  color: var(--vp-c-danger-1);
-}
-
-.compat-test-tool__history-badge--pass {
-  background: color-mix(in srgb, var(--vp-c-green-soft) 64%, var(--vp-c-bg));
-  color: color-mix(in srgb, var(--vp-c-green-1) 82%, var(--vp-c-text-1));
-}
-
-.compat-test-tool__sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.compat-test-tool button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgb(15 23 42 / 0.06);
-}
-
-.compat-test-tool__secondary-button:hover:not(:disabled) {
-  border-color: var(--vp-c-brand-1);
-}
-
-.compat-test-tool__success-button:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--vp-c-green-1) 60%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-green-soft) 68%, var(--vp-c-bg));
-}
-
-.compat-test-tool__danger-button:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--vp-c-danger-1) 60%, var(--vp-c-divider));
-  background: color-mix(in srgb, var(--vp-c-danger-soft) 62%, var(--vp-c-bg));
-}
-
-.compat-test-tool button:focus-visible,
-.compat-test-tool input:focus-visible,
-.compat-test-tool textarea:focus-visible,
-.compat-test-tool__prompt:focus-visible,
-.compat-test-tool__result-card:focus-visible {
-  outline: none;
-  border-color: color-mix(in srgb, var(--vp-c-brand-1) 52%, var(--vp-c-divider));
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vp-c-brand-1) 16%, transparent);
-}
-
-.compat-test-tool__complete-result:focus-visible {
-  outline: none;
-}
-
-.compat-test-tool__complete-result:focus-visible .compat-test-tool__result-card {
-  border-color: color-mix(in srgb, var(--vp-c-brand-1) 52%, var(--vp-c-divider));
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vp-c-brand-1) 16%, transparent);
-}
-
-@media (max-width: 640px) {
-  .compat-test-tool__setup {
-    grid-template-columns: 1fr;
-  }
-
-  .compat-test-tool__field-head,
-  .compat-test-tool__label-row {
-    display: grid;
-    justify-content: stretch;
-    gap: 4px;
-  }
-
-  .compat-test-tool__label-row-actions {
-    display: grid;
-    gap: 8px;
-  }
-
-  .compat-test-tool__test-panel .compat-test-tool__label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .compat-test-tool__test-panel .compat-test-tool__label-row-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    min-width: 0;
-    flex-shrink: 0;
-  }
-
-  .compat-test-tool__target-panel .compat-test-tool__label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .compat-test-tool__target-panel .compat-test-tool__input-mode {
-    justify-content: flex-end;
-    gap: 6px;
-    min-width: 0;
-    flex-shrink: 0;
-  }
-
-  .compat-test-tool__bulk-import-actions {
-    display: grid;
-    justify-content: stretch;
-  }
-
-  .compat-test-tool__input-mode {
-    justify-content: space-between;
-  }
-
-  .compat-test-tool__pagination {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    width: 100%;
-  }
-
-  .compat-test-tool__label-row > span {
-    white-space: normal;
-  }
-
-  .compat-test-tool__primary-button,
-  .compat-test-tool__secondary-button,
-  .compat-test-tool__success-button,
-  .compat-test-tool__danger-button {
-    width: 100%;
-  }
-
-  .compat-test-tool__pagination .compat-test-tool__secondary-button {
-    width: auto;
-    flex: 1 1 0;
-  }
-
-  .compat-test-tool__pagination .compat-test-tool__page-status {
-    text-align: center;
-  }
-
-  .compat-test-tool__actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .compat-test-tool__actions > :nth-child(3) {
-    grid-column: 1 / -1;
-  }
-}
-</style>

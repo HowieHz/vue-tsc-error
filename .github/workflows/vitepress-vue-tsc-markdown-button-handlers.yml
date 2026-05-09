@@ -1,14 +1,14 @@
-name: vitepress-vue-tsgo-unexpected-eof-in-tag
+name: vitepress-vue-tsc-markdown-button-handlers
 
 on:
   push:
     paths:
-      - ".github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml"
-      - "vitepress-vue-tsgo-unexpected-eof-in-tag/**"
+      - ".github/workflows/vitepress-vue-tsc-markdown-button-handlers.yml"
+      - "vitepress-vue-tsc-markdown-button-handlers/**"
   pull_request:
     paths:
-      - ".github/workflows/vitepress-vue-tsgo-unexpected-eof-in-tag.yml"
-      - "vitepress-vue-tsgo-unexpected-eof-in-tag/**"
+      - ".github/workflows/vitepress-vue-tsc-markdown-button-handlers.yml"
+      - "vitepress-vue-tsc-markdown-button-handlers/**"
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: vitepress-vue-tsgo-unexpected-eof-in-tag
+        working-directory: vitepress-vue-tsc-markdown-button-handlers
     steps:
       - uses: actions/checkout@v4
 
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          cache-dependency-path: vitepress-vue-tsgo-unexpected-eof-in-tag/pnpm-lock.yaml
+          cache-dependency-path: vitepress-vue-tsc-markdown-button-handlers/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --ignore-workspace

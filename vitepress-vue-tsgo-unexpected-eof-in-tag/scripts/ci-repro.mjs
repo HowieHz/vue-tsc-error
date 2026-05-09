@@ -3,6 +3,17 @@ import { EOL } from "node:os";
 import { spawnSync } from "node:child_process";
 
 const TIMEOUT_MS = 120_000;
+const CASES = [
+  "two-template-attrs",
+  "two-inline-codes",
+  "template-then-inline",
+  "inline-then-template",
+];
+const CHECKERS = [
+  { name: "vue-tsc", script: "typecheck:vue-tsc" },
+  { name: "vue-tsgo", script: "typecheck:vue-tsgo" },
+  { name: "golar", script: "typecheck:golar" },
+];
 
 function run(label, command, args) {
   const result = spawnSync(command, args, {
@@ -35,15 +46,15 @@ function run(label, command, args) {
   };
 }
 
+function isSuccessful(result) {
+  return !result.timedOut && result.status === 0;
+}
+
 function outcomeLabel(result) {
   if (result.timedOut) {
     return "❌ timeout";
   }
   return result.status === 0 ? "√ success" : "❌ failure";
-}
-
-function isSuccessful(result) {
-  return !result.timedOut && result.status === 0;
 }
 
 function appendSummary(lines) {
@@ -84,10 +95,28 @@ function directDependencyNames() {
 
 const versions = loadInstalledVersions();
 const dependencies = directDependencyNames();
-const vueTsc = run("vue-tsc", "pnpm", ["run", "typecheck:vue-tsc"]);
-const vueTsgo = run("vue-tsgo", "pnpm", ["run", "typecheck:vue-tsgo"]);
-const golar = run("golar", "pnpm", ["run", "typecheck:golar"]);
-const overallSuccess = [vueTsc, vueTsgo, golar].every(isSuccessful);
+const docsBuild = run("docs:build", "pnpm", ["run", "docs:build"]);
+const results = Object.fromEntries(
+  CASES.map((caseName) => [
+    caseName,
+    Object.fromEntries(
+      CHECKERS.map((checker) => [
+        checker.name,
+        run(
+          `${checker.name} ${caseName}`,
+          "pnpm",
+          ["exec", checker.name, "-p", `tsconfig.case.${caseName}.json`, "--pretty", "false"],
+        ),
+      ]),
+    ),
+  ]),
+);
+
+const overallSuccess =
+  isSuccessful(docsBuild) &&
+  CASES.every((caseName) =>
+    CHECKERS.every((checker) => isSuccessful(results[caseName][checker.name])),
+  );
 
 appendSummary([
   "## Versions",
@@ -96,14 +125,21 @@ appendSummary([
   "| --- | --- |",
   ...dependencies.map((name) => `| ${name} | ${versions[name]?.version ?? "unknown"} |`),
   "",
+  "## Build",
+  "",
+  "| Step | Outcome |",
+  "| --- | --- |",
+  `| docs:build | ${outcomeLabel(docsBuild)} |`,
+  "",
   "## Typecheck Outcomes",
   "",
-  "| Checker | Outcome |",
-  "| --- | --- |",
-  `| vue-tsc | ${outcomeLabel(vueTsc)} |`,
-  `| vue-tsgo | ${outcomeLabel(vueTsgo)} |`,
-  `| golar | ${outcomeLabel(golar)} |`,
-  `| Overall | ${overallSuccess ? "√ success" : "❌ failure"} |`,
+  "| Case | vue-tsc | vue-tsgo | golar |",
+  "| --- | --- | --- | --- |",
+  ...CASES.map(
+    (caseName) =>
+      `| ${caseName} | ${outcomeLabel(results[caseName]["vue-tsc"])} | ${outcomeLabel(results[caseName]["vue-tsgo"])} | ${outcomeLabel(results[caseName]["golar"])} |`,
+  ),
+  `| Overall | ${overallSuccess ? "√ success" : "❌ failure"} |  |  |`,
 ]);
 
 if (!overallSuccess) {

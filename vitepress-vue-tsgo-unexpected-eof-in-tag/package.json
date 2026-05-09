@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "ci:repro": "node ./scripts/ci-repro.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",

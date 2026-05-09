@@ -2,7 +2,7 @@ import { appendFileSync, readFileSync } from "node:fs";
 import { EOL } from "node:os";
 import { spawnSync } from "node:child_process";
 
-const TIMEOUT_MS = 120_000;
+const TIMEOUT_MS = 300_000;
 
 function run(label, command, args) {
   const result = spawnSync(command, args, {
@@ -30,7 +30,6 @@ function run(label, command, args) {
 
   return {
     status: result.status,
-    output: `${stdout}${stderr}`,
     timedOut,
   };
 }
@@ -54,23 +53,11 @@ function appendSummary(lines) {
   appendFileSync(summaryPath, lines.join(EOL) + EOL, "utf8");
 }
 
-function loadInstalledVersions() {
-  const result = spawnSync("pnpm", ["list", "--depth", "0", "--json"], {
-    cwd: process.cwd(),
-    encoding: "utf8",
-    shell: process.platform === "win32",
-    timeout: TIMEOUT_MS,
-  });
-
-  if (result.status !== 0 || !result.stdout) {
-    throw new Error("Unable to read installed package versions.");
-  }
-
-  const parsed = JSON.parse(result.stdout);
-  const root = parsed[0] ?? {};
+function loadDeclaredVersions() {
+  const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   return {
-    ...(root.dependencies ?? {}),
-    ...(root.devDependencies ?? {}),
+    ...(pkg.dependencies ?? {}),
+    ...(pkg.devDependencies ?? {}),
   };
 }
 
@@ -82,7 +69,7 @@ function directDependencyNames() {
   ];
 }
 
-const versions = loadInstalledVersions();
+const versions = loadDeclaredVersions();
 const dependencies = directDependencyNames();
 const vueTsc = run("vue-tsc", "pnpm", ["run", "typecheck:vue-tsc"]);
 const vueTsgo = run("vue-tsgo", "pnpm", ["run", "typecheck:vue-tsgo"]);
@@ -94,7 +81,7 @@ appendSummary([
   "",
   "| Package | Version |",
   "| --- | --- |",
-  ...dependencies.map((name) => `| ${name} | ${versions[name]?.version ?? "unknown"} |`),
+  ...dependencies.map((name) => `| ${name} | ${versions[name] ?? "unknown"} |`),
   "",
   "## Typecheck Outcomes",
   "",

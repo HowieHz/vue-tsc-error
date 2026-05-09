@@ -90,7 +90,8 @@ appendSummary([
   `| vue-tsc | ${outcomeLabel(vueTsc)} |`,
   `| vue-tsgo | ${outcomeLabel(vueTsgo)} |`,
   `| golar | ${outcomeLabel(golar)} |`,
-  `| Overall | ${overallSuccess ? "√ success" : "❌ failure"} |`,
+  "",
+  `Overall: ${overallSuccess ? "√ success" : "❌ failure"}`,
 ]);
 
 if (!overallSuccess) {

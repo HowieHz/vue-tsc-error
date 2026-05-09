@@ -124,10 +124,11 @@ appendSummary([
   "| Case | vue-tsc | vue-tsgo | golar |",
   "| --- | --- | --- | --- |",
   ...CASES.map(
-    (caseName) =>
+      (caseName) =>
       `| ${caseName} | ${outcomeLabel(results[caseName]["vue-tsc"])} | ${outcomeLabel(results[caseName]["vue-tsgo"])} | ${outcomeLabel(results[caseName]["golar"])} |`,
   ),
-  `| Overall | ${overallSuccess ? "√ success" : "❌ failure"} |  |  |`,
+  "",
+  `Overall: ${overallSuccess ? "√ success" : "❌ failure"}`,
 ]);
 
 if (!overallSuccess) {

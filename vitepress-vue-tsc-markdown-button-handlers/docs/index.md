@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { nextTick, ref } from "vue";
 
-const targetListPage = ref(2);
-const isEditingTargetListPage = ref(false);
-const targetListPageInputRef = ref<HTMLInputElement | null>(null);
+const p = ref(2);
+const e = ref(false);
+const r = ref<HTMLInputElement | null>(null);
 
-function stepTargetListPage(delta: number) {
-  targetListPage.value = Math.max(1, targetListPage.value + delta);
+function step(delta: number) {
+  p.value = Math.max(1, p.value + delta);
 }
 
-async function startEditingTargetListPage() {
-  isEditingTargetListPage.value = true;
+async function edit() {
+  e.value = true;
   await nextTick();
-  targetListPageInputRef.value?.focus();
+  r.value?.focus();
 }
 </script>
 
 <div>
-  <button :disabled="targetListPage <= 1" @click="stepTargetListPage(-1)">Previous</button>
-  <button @click="startEditingTargetListPage()">Edit page</button>
-  <input v-if="isEditingTargetListPage" ref="targetListPageInputRef" />
+  <button :disabled="p <= 1" @click="step(-1)">Previous</button>
+  <button @click="edit()">Edit</button>
+  <input v-if="e" ref="r" />
 </div>

@@ -1,0 +1,29 @@
+version: 2
+
+multi-ecosystem-groups:
+  all-dependencies:
+    schedule:
+      interval: daily
+      time: "04:30"
+      timezone: Asia/Shanghai
+
+updates:
+  - package-ecosystem: npm
+    directories:
+      - /vitepress-golar-missing-global-in-markdown
+      - /vitepress-vue-tsc-markdown-button-handlers
+      - /vitepress-vue-tsc-nested-template-expr
+      - /vitepress-vue-tsc-template-string-locals
+      - /vitepress-vue-tsgo-missing-ambient-module
+      - /vitepress-vue-tsgo-unexpected-eof-in-tag
+    patterns:
+      - "*"
+    multi-ecosystem-group: all-dependencies
+    target-branch: main
+
+  - package-ecosystem: github-actions
+    directory: /
+    patterns:
+      - "*"
+    multi-ecosystem-group: all-dependencies
+    target-branch: main

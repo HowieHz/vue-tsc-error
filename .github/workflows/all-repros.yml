@@ -1,0 +1,166 @@
+name: all-repros
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  vitepress-golar-missing-global-in-markdown:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-golar-missing-global-in-markdown
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-golar-missing-global-in-markdown/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+      - name: Run ci
+        run: pnpm run ci:repro
+
+  vitepress-vue-tsc-markdown-button-handlers:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsc-markdown-button-handlers
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsc-markdown-button-handlers/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+      - name: Run ci
+        run: pnpm run ci:repro
+
+  vitepress-vue-tsc-nested-template-expr:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsc-nested-template-expr
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsc-nested-template-expr/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+      - name: Run ci
+        run: pnpm run ci:repro
+
+  vitepress-vue-tsc-template-string-locals:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsc-template-string-locals
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsc-template-string-locals/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+      - name: Run ci
+        run: pnpm run ci:repro
+
+  vitepress-vue-tsgo-missing-ambient-module:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsgo-missing-ambient-module
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsgo-missing-ambient-module/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+      - name: Run ci
+        run: pnpm run ci:repro
+
+  vitepress-vue-tsgo-unexpected-eof-in-tag:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vitepress-vue-tsgo-unexpected-eof-in-tag
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vitepress-vue-tsgo-unexpected-eof-in-tag/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+      - name: Run ci
+        run: pnpm run ci:repro
+
+  summary:
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - vitepress-golar-missing-global-in-markdown
+      - vitepress-vue-tsc-markdown-button-handlers
+      - vitepress-vue-tsc-nested-template-expr
+      - vitepress-vue-tsc-template-string-locals
+      - vitepress-vue-tsgo-missing-ambient-module
+      - vitepress-vue-tsgo-unexpected-eof-in-tag
+    steps:
+      - name: Write summary
+        run: |
+          {
+            echo "## Repro Results"
+            echo ""
+            echo "| Repo | Outcome |"
+            echo "| --- | --- |"
+            echo "| vitepress-golar-missing-global-in-markdown | ${{ needs.vitepress-golar-missing-global-in-markdown.result == 'success' && '√ success' || '❌ failure' }} |"
+            echo "| vitepress-vue-tsc-markdown-button-handlers | ${{ needs.vitepress-vue-tsc-markdown-button-handlers.result == 'success' && '√ success' || '❌ failure' }} |"
+            echo "| vitepress-vue-tsc-nested-template-expr | ${{ needs.vitepress-vue-tsc-nested-template-expr.result == 'success' && '√ success' || '❌ failure' }} |"
+            echo "| vitepress-vue-tsc-template-string-locals | ${{ needs.vitepress-vue-tsc-template-string-locals.result == 'success' && '√ success' || '❌ failure' }} |"
+            echo "| vitepress-vue-tsgo-missing-ambient-module | ${{ needs.vitepress-vue-tsgo-missing-ambient-module.result == 'success' && '√ success' || '❌ failure' }} |"
+            echo "| vitepress-vue-tsgo-unexpected-eof-in-tag | ${{ needs.vitepress-vue-tsgo-unexpected-eof-in-tag.result == 'success' && '√ success' || '❌ failure' }} |"
+            echo ""
+            echo "Overall: ${{ (needs.vitepress-golar-missing-global-in-markdown.result == 'success' && needs.vitepress-vue-tsc-markdown-button-handlers.result == 'success' && needs.vitepress-vue-tsc-nested-template-expr.result == 'success' && needs.vitepress-vue-tsc-template-string-locals.result == 'success' && needs.vitepress-vue-tsgo-missing-ambient-module.result == 'success' && needs.vitepress-vue-tsgo-unexpected-eof-in-tag.result == 'success') && '√ success' || '❌ failure' }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail when any repro failed
+        if: |
+          needs.vitepress-golar-missing-global-in-markdown.result != 'success' ||
+          needs.vitepress-vue-tsc-markdown-button-handlers.result != 'success' ||
+          needs.vitepress-vue-tsc-nested-template-expr.result != 'success' ||
+          needs.vitepress-vue-tsc-template-string-locals.result != 'success' ||
+          needs.vitepress-vue-tsgo-missing-ambient-module.result != 'success' ||
+          needs.vitepress-vue-tsgo-unexpected-eof-in-tag.result != 'success'
+        run: exit 1

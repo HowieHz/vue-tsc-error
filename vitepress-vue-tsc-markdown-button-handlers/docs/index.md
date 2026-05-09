@@ -1,6 +1,9 @@
 <script setup lang="ts">
-function info() {
+import { nextTick } from "vue";
+
+async function info() {
   window.alert('alert')
+  await nextTick();
 }
 </script>
 

@@ -20,7 +20,7 @@
     "golar": "^0.1.7",
     "typescript": "^6.0.3",
     "vitepress": "2.0.0-alpha.17",
-    "vue-tsc": "^3.2.8",
+    "vue-tsc": "^3.2.9",
     "vue-tsgo": "^0.2.2"
   }
 }

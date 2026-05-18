@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@golar/vue": "^0.1.7",
-    "@typescript/native-preview": "7.0.0-dev.20260514.1",
+    "@typescript/native-preview": "7.0.0-dev.20260517.1",
     "golar": "^0.1.7",
     "typescript": "^6.0.3",
     "vitepress": "2.0.0-alpha.17",

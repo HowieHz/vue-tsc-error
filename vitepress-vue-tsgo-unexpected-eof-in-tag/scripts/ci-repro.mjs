@@ -81,6 +81,14 @@ function directDependencyNames() {
   ];
 }
 
+function checkerArgs(checker, caseName) {
+  const tsconfig = `tsconfig.case.${caseName}.json`;
+  if (checker.name === "golar") {
+    return ["exec", checker.name, "tsc", "-p", tsconfig, "--pretty", "false"];
+  }
+  return ["exec", checker.name, "-p", tsconfig, "--pretty", "false"];
+}
+
 const versions = loadInstalledVersions();
 const dependencies = directDependencyNames();
 const docsBuild = run("docs:build", "pnpm", ["run", "docs:build"]);
@@ -93,7 +101,7 @@ const results = Object.fromEntries(
         run(
           `${checker.name} ${caseName}`,
           "pnpm",
-          ["exec", checker.name, "-p", `tsconfig.case.${caseName}.json`, "--pretty", "false"],
+          checkerArgs(checker, caseName),
         ),
       ]),
     ),
